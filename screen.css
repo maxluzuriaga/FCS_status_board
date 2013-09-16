@@ -37,9 +37,6 @@ body {
 }
 html { overflow-y: scroll; }
 label, input[type=button], input[type=submit], button { cursor: pointer; }
-ol {
-	list-style-type: none
-}
 em {
 	font-style: italic;
 }
@@ -49,7 +46,6 @@ strong {
 #main {
 	width: 90%;
 	height: 90%;
-	background-color: pink;
 	margin: 5%;
 }
 
@@ -76,6 +72,24 @@ header h1 {
 	margin: 2.5% 0;
 	border-top: 5px solid black;
 	border-bottom: 5px solid black;
+}
+
+#schedule ol {
+	list-style-type: none;
+}
+#schedule li {
+	margin-bottom: 1%;
+}
+#schedule li .start-time {
+	display: block;
+	float: left;
+	width: 15%;
+}
+#schedule li .block {
+	display: block;
+	text-align: center;
+	margin-left: 15%;
+	width: 70%;
 }
 
 /* ---------------------------------------------------------------------------------------

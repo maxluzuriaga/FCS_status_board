@@ -1,4 +1,4 @@
 $(document).ready(function(){
-	$("header").fitText(3.0);
-	$("footer").fitText(0.5);
+	$("body").fitText(3.0);
+	$("footer").fitText(0.2);
 });

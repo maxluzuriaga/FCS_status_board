@@ -23,33 +23,22 @@ textarea { overflow: auto; }
 input[type="radio"] { vertical-align: text-bottom; }
 input[type="checkbox"] { vertical-align: bottom; }
 button, input, select, textarea { margin: 0; }
+time { display: block; }
 
 /* ---------------------------------------------------------------------------------------
    HTML Elements
    --------------------------------------------------------------------------------------- */
 
 body {
-	font-family: Helvetica, Arial, sans-serif;
-	color: #444;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+	font-weight: 300;
 	font-size: 100%;
 	background: #fff;
 }
 html { overflow-y: scroll; }
 label, input[type=button], input[type=submit], button { cursor: pointer; }
-a {
-	color: #0000ee;
-}
-	a:hover {
-		color: #0000ee;
-	}
-	a:active, a:visited:active {
-		color: #ff0000;
-	}
-	a:visited {
-		color: #551a8b;
-	}
-p {
-	
+ol {
+	list-style-type: none
 }
 em {
 	font-style: italic;
@@ -57,7 +46,12 @@ em {
 strong {
 	font-weight: bold;
 }
-	
+#main {
+	width: 90%;
+	height: 90%;
+	background-color: pink;
+	margin: 5%;
+}
 
 /* ---------------------------------------------------------------------------------------
    Header
@@ -66,27 +60,32 @@ strong {
 header {
 	
 }
-hgroup {
-	
+header time {
+	float: left;
 }
-nav {
-	
+header h1 {
+	float: right;
 }
 
 /* ---------------------------------------------------------------------------------------
-   Content
+   Schedule
    --------------------------------------------------------------------------------------- */
 
-#main {
-	
+#schedule {
+	padding: 2.5% 0;
+	margin: 2.5% 0;
+	border-top: 5px solid black;
+	border-bottom: 5px solid black;
 }
 
 /* ---------------------------------------------------------------------------------------
-   Footer
+   Weather
    --------------------------------------------------------------------------------------- */
    
 footer {
-	
+	width: 20%;
+	margin: 0 auto;
+	background-color: blue;
 }
 
 /* ---------------------------------------------------------------------------------------

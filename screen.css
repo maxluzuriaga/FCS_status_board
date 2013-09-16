@@ -70,26 +70,41 @@ header h1 {
 #schedule {
 	padding: 2.5% 0;
 	margin: 2.5% 0;
-	border-top: 5px solid black;
-	border-bottom: 5px solid black;
+	border-top: 4px solid rgba(0,0,0,.5);
+	border-bottom: 4px solid rgba(0,0,0,.5);
 }
 
 #schedule ol {
 	list-style-type: none;
 }
 #schedule li {
-	margin-bottom: 1%;
+	border-bottom: 1px solid rgba(0,0,0,.2);
+	padding-bottom: 1.1%;
+	margin-bottom: 1.1%;
 }
+#schedule li:last-child {
+	border: none;
+	margin-bottom: 0;
+	padding-bottom: 0
+}
+
 #schedule li .start-time {
 	display: block;
 	float: left;
 	width: 15%;
 }
+#schedule li.current-class .start-time {
+	margin-top: 2.2%;
+}
+
 #schedule li .block {
 	display: block;
 	text-align: center;
 	margin-left: 15%;
 	width: 70%;
+}
+#schedule li.current-class .block {
+	color: green;
 }
 
 /* ---------------------------------------------------------------------------------------

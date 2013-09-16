@@ -114,7 +114,21 @@ header h1 {
 footer {
 	width: 20%;
 	margin: 0 auto;
-	background-color: blue;
+}
+
+#current-temp {
+	width: 50%;
+	float: left;
+}
+#temps {
+	width: 30%;
+	float: right;
+}
+#temps span {
+	display: block;
+}
+#temps span {
+	margin-top: 15%;
 }
 
 /* ---------------------------------------------------------------------------------------

@@ -1,2 +1,2 @@
-FCS_status_board
+FCS Status Board
 ================

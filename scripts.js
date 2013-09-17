@@ -28,6 +28,32 @@ function updatePage() {
 	$("header .time").html(curr_hour + ":" + curr_min)
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
+
+	// Update weather (http://simpleweatherjs.com)
+	var degree = "&#176;"
+
+		// 	<div id="current-temp">
+		// 	<strong>65&#176;</strong>
+		// </div>
+		// <div id="temps">
+		// 	<span class="high-temp">70&#176;</span>
+		// 	<span class="low-temp">48&#176;</span>
+		// </div>
+
+	$.simpleWeather({
+		zipcode: '',
+		woeid: '2524350', // For Wynnewood, PA
+		location: '',
+		unit: 'f',
+		success: function(weather) {
+			$("#current-temp strong").html(weather.temp + degree);
+			$("footer .high-temp").html(weather.high + degree);
+			$("footer .low-temp").html(weather.low + degree);
+		},
+		error: function(error) {
+			console.log("Weather error");
+		}
+	});
 }
 
 window.setInterval(function() {

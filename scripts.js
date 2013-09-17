@@ -18,6 +18,12 @@ function updateWeather() {
 	});
 }
 
+function getLetterDay() {
+	var request = $.get("http://maxluzuriaga.com/get_letter_day.php", function(data) {
+		console.log(data);
+	});
+}
+
 function updatePage() {
 	// Update date and time
 	var m_names = new Array("January", "February", "March", 
@@ -84,10 +90,10 @@ function happeningNow(block, time) {
 	var classTime = block.time;
 	var classLength = block.length;
 
-	for (var i = 0; i <= classLength; i++) {
+	for (var i = 0; i < classLength; i++) {
 		var tempTime = classTime.slice(0); // Clones the array
 
-		// Probably not the most efficient way of doing this, but hey it works
+		// TODO: optimize this calculation
 		if ((tempTime[1] + i) >= 60) { // Loop through, checking every minute that the class is happening to see if it's happening now
 			tempTime[0] = tempTime[0] + 1;
 		}
@@ -114,16 +120,17 @@ function formatTime(time) {
 }
 
 window.setInterval(function() {
-	updatePage();
+	// updatePage();
 }, 1000); // Every second
 
 window.setInterval(function() {
-	updateWeather();
+	// updateWeather();
 }, 60000); // Every minute
 
 $(document).ready(function(){
 	updatePage();
 	updateWeather();
+	getLetterDay();
 
 	$("header").fitText(3.0);
 	$("#schedule li").fitText(4.0);

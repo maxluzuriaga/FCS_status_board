@@ -1,4 +1,6 @@
 var letterDay = "";
+var loading;
+var schedule;
 
 function updateWeather() {
 	// Update weather (http://simpleweatherjs.com)
@@ -20,8 +22,10 @@ function updateWeather() {
 	});
 }
 
-function getLetterDay() {
+function buildSchedule() {
 	var request = $.get("http://maxluzuriaga.com/get_letter_day.php", function(data) {
+		var oldDay = letterDay;
+
 		var d = new Date();
 
 		var curr_year = d.getFullYear();
@@ -48,7 +52,122 @@ function getLetterDay() {
 				}
 			}
 		};
+
+		if (oldDay != letterDay) {
+			// Day has changed, build schedule
+			schedule = [];
+
+			var weekday = d.getDay() - 1;
+
+			// monday/thursday double block 7
+			// friday no 7, second class of day moves to end, community 2nd block, then assembly
+
+			// A: 5, 3, comm/chor, 6, recess, double 1, 2/early, 2/late, [7/double 7]
+			// B: 6, 4, comm/chor, 1, recess, double 2, 3/early, 3/late, [7/double 7]
+			// C: 1, 5, comm/chor, 2, recess, double 3, 4/early, 4/late, [7/double 7]
+			// D: 2, 6, comm/chor, 3, recess, double 4, 5/early, 5/late, [7/double 7]
+			// E: 3, 1, comm/chor, 4, recess, double 5, 6/early, 6/late, [7/double 7]
+			// F: 4, 2, comm/chor, 5, recess, double 6, 1/early, 1/late, [7/double 7]
+			// W: 1, 2, mtn 4 wor, 3, recess, community, 7, 4/early, 4/late, 6, 5
+
+			var blocks = {
+				"A" : [5, 3, 6, 1, 2],
+				"B" : [6, 4, 1, 2, 3],
+				"C" : [1, 5, 2, 3, 4],
+				"D" : [2, 6, 3, 4, 5],
+				"E" : [3, 1, 4, 5, 6],
+				"F" : [4, 2, 5, 6, 1]
+			}
+
+			var days = [
+				[ // Monday
+					"Chorus Block",
+					75
+				],
+				[ // Tuesday
+					"Community Block",
+					40
+				],
+				[], // Wednesday
+				[ // Thursday
+					"Chorus Block",
+					75
+				],
+				[ // Friday
+					"Community Block",
+					"Assembly"
+				]
+			];
+
+			var homeroom = buildBlock("Homeroom", [8,25], 5);
+			var recess = buildBlock("Recess", [11,10], 10);
+
+			schedule.push(homeroom);
+
+			if ((letterDay == "W") || (weekday == 2)) {
+				// Wednesday
+				// W: 1, 2, mtn 4 wor, 3, recess, community, 7, 4/early, 4/late, 6, 5
+				schedule.push(buildBlock(1, [8,30], 40));
+				schedule.push(buildBlock(2, [9,10], 40));
+				schedule.push(buildBlock("Meeting for Worship", [9,50], 40));
+				schedule.push(buildBlock(3, [10,30], 40));
+				schedule.push(recess);
+				schedule.push(buildBlock("Community Block", [11,20], 40));
+				schedule.push(buildBlock(7, [12,00], 40));
+				schedule.push(buildBlock("Block 4 / Early Lunch", [12,40], 40));
+				schedule.push(buildBlock("Block 4 / Late Lunch", [1,20], 35));
+				schedule.push(buildBlock(6, [1,55], 40));
+				schedule.push(buildBlock(5, [2,35], 35));
+			} else if (weekday == 4) {
+				// Friday
+				// "C" : [1, 5, 2, 3, 4];
+				var dayblocks = blocks[letterDay];
+				var freeblocks = days[weekday];
+
+				schedule.push(buildBlock(dayblocks[0], [8,30], 40));
+				schedule.push(buildBlock(freeblocks[0], [9,10], 40));
+				schedule.push(buildBlock(freeblocks[1], [9,50], 40));
+				schedule.push(buildBlock(dayblocks[2], [10,30], 40));
+				schedule.push(recess);
+				schedule.push(buildBlock(dayblocks[3], [11,20], 80));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Early Lunch", [12,40], 40));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [1,20], 35));
+				schedule.push(buildBlock(dayblocks[1], [1,55], 40));
+			} else {
+				// Other days
+				var dayblocks = blocks[letterDay];
+				var dayinfo = days[weekday];
+
+				schedule.push(buildBlock(dayblocks[0], [8,30], 40));
+				schedule.push(buildBlock(dayblocks[1], [9,10], 40));
+				schedule.push(buildBlock(dayinfo[0], [9,50], 40));
+				schedule.push(buildBlock(dayblocks[2], [10,30], 40));
+				schedule.push(recess);
+				schedule.push(buildBlock(dayblocks[3], [11,20], 80));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Early Lunch", [12,40], 40));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [1,20], 35));
+				schedule.push(buildBlock(7, [1,55], dayinfo[1]));
+			}
+
+			loading = false;
+		}
 	});
+}
+
+function buildBlock(name, time, length) {
+	if ((typeof name) == "string") {
+		return {
+			"time" : time,
+			"length" : length,
+			"name" : name
+		};
+	} else {
+		return {
+			"time" : time,
+			"length" : length,
+			"name" : "Block " + name
+		};
+	}
 }
 
 function updatePage() {
@@ -76,41 +195,18 @@ function updatePage() {
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
-	// Update schedule
-	var sample_schedule = [
-		{
-			"time" : [10,0],
-			"length" : 30,
-			"name" : "Block 5"
-		},
-		{
-			"time" : [10,30],
-			"length" : 30,
-			"name" : "Block 6"
-		},
-		{
-			"time" : [11,0],
-			"length" : 30,
-			"name" : "Block 7"
-		},
-		{
-			"time" : [11,30],
-			"length" : 30,
-			"name" : "Block 8"
-		}
-	];
-
 	var currentIndex = 0;
 
-	for (var i = 0; i < sample_schedule.length; i++) {
-		// console.log(sample_schedule[i].name);
-		if (happeningNow(sample_schedule[i], [curr_hour, curr_min])) {
-			currentIndex = i;
-			break;
-		}
-	};
-
-	console.log(sample_schedule[currentIndex].name);
+	if (loading) {
+		$("#schedule").html('<h1 class="loading">Loading...</h1>');
+	} else {
+		for (var i = 0; i < schedule.length; i++) {
+			if (happeningNow(schedule[i], [curr_hour, curr_min])) {
+				currentIndex = i;
+				break;
+			}
+		};
+	}
 }
 
 function happeningNow(block, time) {
@@ -147,17 +243,19 @@ function formatTime(time) {
 }
 
 window.setInterval(function() {
-	// updatePage();
+	updatePage();
 }, 1000); // Every second
 
 window.setInterval(function() {
-	// updateWeather();
+	updateWeather();
 }, 60000); // Every minute
 
 $(document).ready(function(){
+	loading = true;
+
+	buildSchedule();
 	updatePage();
 	updateWeather();
-	getLetterDay();
 
 	$("header").fitText(3.0);
 	$("#schedule li").fitText(4.0);

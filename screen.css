@@ -85,6 +85,7 @@ header h1 {
 	list-style-type: none;
 }
 #schedule li {
+	/*background-color: red;*/
 	border-bottom: 1px solid rgba(0,0,0,.2);
 	padding-bottom: 1.1%;
 	margin-bottom: 1.1%;
@@ -99,9 +100,10 @@ header h1 {
 	display: block;
 	float: left;
 	width: 15%;
+	margin-top: 0.6%;
 }
 #schedule li.current-class .start-time {
-	margin-top: 2.2%;
+	margin-top: 3.8%;
 }
 
 #schedule li .block {

@@ -39,7 +39,7 @@ function updatePage() {
 		curr_hour = 12;
 	}
 
-	$("header .time").html(formatTime([curr_min, curr_hour]));
+	$("header .time").html(formatTime([curr_hour, curr_min]));
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
@@ -110,7 +110,7 @@ function formatTime(time) {
 		curr_min = "0" + curr_min;
 	}
 
-	return curr_min + ":" + curr_hour;
+	return curr_hour + ":" + curr_min;
 }
 
 window.setInterval(function() {

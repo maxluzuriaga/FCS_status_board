@@ -35,17 +35,11 @@ function updatePage() {
 	var curr_hour = d.getHours() % 12;
 	var curr_min = d.getMinutes();
 
-	curr_min = curr_min + "";
-	
-	if (curr_min.length == 1) {
-		curr_min = "0" + curr_min;
-	}
-
 	if (curr_hour == 0) {
 		curr_hour = 12;
 	}
 
-	$("header .time").html(curr_hour + ":" + curr_min)
+	$("header .time").html(formatTime([curr_min, curr_hour]));
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
@@ -106,6 +100,17 @@ function happeningNow(block, time) {
 	};
 
 	return false;
+}
+
+function formatTime(time) {
+	var curr_hour = time[0];
+	var curr_min = time[1] + "";
+	
+	if (curr_min.length == 1) {
+		curr_min = "0" + curr_min;
+	}
+
+	return curr_min + ":" + curr_hour;
 }
 
 window.setInterval(function() {

@@ -1,7 +1,7 @@
 FCS Status Board
 ================
 
-If either of you wants to fork the repo and do these, be my guest.
+If anyone wants to fork the repo and do these, be my guest.
 
 - Fade out passed class, make text smaller
 - FCS logo instead of name

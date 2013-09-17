@@ -59,6 +59,13 @@ header {
 header time {
 	float: left;
 }
+header time .time {
+	color: green;
+}
+
+header time .date {
+	color: red;
+}
 header h1 {
 	float: right;
 }

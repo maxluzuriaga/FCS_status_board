@@ -1,3 +1,5 @@
+var letterDay = "";
+
 function updateWeather() {
 	// Update weather (http://simpleweatherjs.com)
 	var degree = "&#176;"
@@ -20,7 +22,32 @@ function updateWeather() {
 
 function getLetterDay() {
 	var request = $.get("http://maxluzuriaga.com/get_letter_day.php", function(data) {
-		console.log(data);
+		var d = new Date();
+
+		var curr_year = d.getFullYear();
+		var curr_month = d.getMonth() + 1;
+		var curr_date = d.getDate();
+
+		if (curr_month < 10) {
+			curr_month = "0" + curr_month;
+		}
+
+		var dayformatted = "" + curr_year + curr_month + curr_date;
+
+		// https://code.google.com/p/ijp/
+		icalParser.parseIcal(data);
+
+		for (var i = 0; i < icalParser.ical.events.length; i++) {
+			var ev = icalParser.ical.events[i];
+
+			if (ev.dtstart.value == dayformatted) {
+				var arr = ev.summary.value.split(" ");
+				if (arr[1] == "Day") {
+					letterDay = arr[0];
+					break;
+				}
+			}
+		};
 	});
 }
 

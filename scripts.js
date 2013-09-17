@@ -1,3 +1,23 @@
+function updateWeather() {
+	// Update weather (http://simpleweatherjs.com)
+	var degree = "&#176;"
+
+	$.simpleWeather({
+		zipcode: '',
+		woeid: '2524350', // For Wynnewood, PA
+		location: '',
+		unit: 'f',
+		success: function(weather) {
+			$("#current-temp strong").html(weather.temp + degree);
+			$("footer .high-temp").html(weather.high + degree);
+			$("footer .low-temp").html(weather.low + degree);
+		},
+		error: function(error) {
+			console.log("Weather error");
+		}
+	});
+}
+
 function updatePage() {
 	// Update date and time
 	var m_names = new Array("January", "February", "March", 
@@ -29,39 +49,76 @@ function updatePage() {
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
-	// Update weather (http://simpleweatherjs.com)
-	var degree = "&#176;"
-
-		// 	<div id="current-temp">
-		// 	<strong>65&#176;</strong>
-		// </div>
-		// <div id="temps">
-		// 	<span class="high-temp">70&#176;</span>
-		// 	<span class="low-temp">48&#176;</span>
-		// </div>
-
-	$.simpleWeather({
-		zipcode: '',
-		woeid: '2524350', // For Wynnewood, PA
-		location: '',
-		unit: 'f',
-		success: function(weather) {
-			$("#current-temp strong").html(weather.temp + degree);
-			$("footer .high-temp").html(weather.high + degree);
-			$("footer .low-temp").html(weather.low + degree);
+	// Update schedule
+	var sample_schedule = [
+		{
+			"time" : [10,0],
+			"length" : 30,
+			"name" : "Block 5"
 		},
-		error: function(error) {
-			console.log("Weather error");
+		{
+			"time" : [10,30],
+			"length" : 30,
+			"name" : "Block 6"
+		},
+		{
+			"time" : [11,0],
+			"length" : 30,
+			"name" : "Block 7"
+		},
+		{
+			"time" : [11,30],
+			"length" : 30,
+			"name" : "Block 8"
 		}
-	});
+	];
+
+	var currentIndex = 0;
+
+	for (var i = 0; i < sample_schedule.length; i++) {
+		// console.log(sample_schedule[i].name);
+		if (happeningNow(sample_schedule[i], [curr_hour, curr_min])) {
+			currentIndex = i;
+			break;
+		}
+	};
+
+	console.log(sample_schedule[currentIndex].name);
+}
+
+function happeningNow(block, time) {
+	var classTime = block.time;
+	var classLength = block.length;
+
+	for (var i = 0; i <= classLength; i++) {
+		var tempTime = classTime.slice(0); // Clones the array
+
+		// Probably not the most efficient way of doing this, but hey it works
+		if ((tempTime[1] + i) >= 60) { // Loop through, checking every minute that the class is happening to see if it's happening now
+			tempTime[0] = tempTime[0] + 1;
+		}
+
+		tempTime[1] = (tempTime[1] + i) % 60;
+
+		if ((tempTime[0] == time[0]) && (tempTime[1] == time[1])) {
+			return true;
+		}
+	};
+
+	return false;
 }
 
 window.setInterval(function() {
 	updatePage();
-}, 1000);
+}, 1000); // Every second
+
+window.setInterval(function() {
+	updateWeather();
+}, 60000); // Every minute
 
 $(document).ready(function(){
 	updatePage();
+	updateWeather();
 
 	$("header").fitText(3.0);
 	$("#schedule li").fitText(4.0);

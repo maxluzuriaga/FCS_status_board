@@ -102,8 +102,15 @@ header h1 {
 	width: 15%;
 	margin-top: 0.6%;
 }
+#schedule li.last-class .start-time {
+	margin-top: 0;
+}
 #schedule li.current-class .start-time {
 	margin-top: 3.8%;
+}
+
+#schedule li.last-class {
+	opacity: 0.5;
 }
 
 #schedule li .block {

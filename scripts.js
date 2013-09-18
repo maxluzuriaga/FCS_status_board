@@ -1,6 +1,7 @@
 var letterDay = "";
 var loading;
 var schedule;
+var oldIndex;
 
 function updateWeather() {
 	// Update weather (http://simpleweatherjs.com)
@@ -183,14 +184,45 @@ function updatePage() {
 	var currentIndex;
 
 	if (loading) {
-		$("#schedule").html('<h1 class="loading">Loading...</h1>');
+		// Some loading code
 	} else {
 		for (var i = 0; i < schedule.length; i++) {
 			if (happeningNow(schedule[i], [curr_hour, curr_min])) {
 				currentIndex = i;
 				break;
 			}
-		};
+		}
+
+		// TODO: handle situation where there's no class (before/after school)
+		// TODO: handle days with no school (weekends, holidays)
+
+		if (currentIndex != oldIndex) {
+			oldIndex = currentIndex;
+
+			var items = [];
+
+			for (var n = currentIndex - 1; n <= currentIndex + 3; n++) {
+				if (n < 0) {
+					continue; // If we're on the first block, don't insert block before
+				} else if (n >= schedule.length) { // Likewise if we're beyond the schedule's bounds
+					break;
+				}
+
+				var block = schedule[n];
+				var additionalClass = '';
+
+				if (n == currentIndex) {
+					additionalClass = ' current-class';
+				} else if (n == currentIndex - 1) {
+					additionalClass = ' last-class';
+				}
+
+				items.push('<li class="group' + additionalClass + '"><time class="start-time">' + formatTime(block.time) + '</time><span class="block">' + block.name + '</span></li>');
+			}
+
+			$("#schedule ol").html(items.join(""));
+			layoutText();
+		}
 	}
 }
 
@@ -231,6 +263,17 @@ function formatTime(time) {
 	return curr_hour + ":" + curr_min;
 }
 
+function layoutText() {
+	$("header").fitText(3.0);
+	$("footer #current-temp").fitText(0.12);
+	$("footer #temps").fitText(0.2);
+
+	$("#schedule li").fitText(4.0);
+	$("#schedule li .block").fitText(2.0);
+	$("#schedule li.last-class .block").fitText(2.9);
+	$("#schedule li.current-class .block").fitText(0.9);
+}
+
 window.setInterval(function() {
 	updatePage();
 }, 1000); // Every second
@@ -246,10 +289,5 @@ $(document).ready(function(){
 	updatePage();
 	updateWeather();
 
-	$("header").fitText(3.0);
-	$("#schedule li").fitText(4.0);
-	$("#schedule li .block").fitText(2.0);
-	$("#schedule li.current-class .block").fitText(0.7);
-	$("footer #current-temp").fitText(0.12);
-	$("footer #temps").fitText(0.2);
+	layoutText();
 });

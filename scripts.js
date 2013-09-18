@@ -59,17 +59,6 @@ function buildSchedule() {
 
 			var weekday = d.getDay() - 1;
 
-			// monday/thursday double block 7
-			// friday no 7, second class of day moves to end, community 2nd block, then assembly
-
-			// A: 5, 3, comm/chor, 6, recess, double 1, 2/early, 2/late, [7/double 7]
-			// B: 6, 4, comm/chor, 1, recess, double 2, 3/early, 3/late, [7/double 7]
-			// C: 1, 5, comm/chor, 2, recess, double 3, 4/early, 4/late, [7/double 7]
-			// D: 2, 6, comm/chor, 3, recess, double 4, 5/early, 5/late, [7/double 7]
-			// E: 3, 1, comm/chor, 4, recess, double 5, 6/early, 6/late, [7/double 7]
-			// F: 4, 2, comm/chor, 5, recess, double 6, 1/early, 1/late, [7/double 7]
-			// W: 1, 2, mtn 4 wor, 3, recess, community, 7, 4/early, 4/late, 6, 5
-
 			var blocks = {
 				"A" : [5, 3, 6, 1, 2],
 				"B" : [6, 4, 1, 2, 3],
@@ -115,9 +104,9 @@ function buildSchedule() {
 				schedule.push(buildBlock("Community Block", [11,20], 40));
 				schedule.push(buildBlock(7, [12,00], 40));
 				schedule.push(buildBlock("Block 4 / Early Lunch", [12,40], 40));
-				schedule.push(buildBlock("Block 4 / Late Lunch", [1,20], 35));
-				schedule.push(buildBlock(6, [1,55], 40));
-				schedule.push(buildBlock(5, [2,35], 35));
+				schedule.push(buildBlock("Block 4 / Late Lunch", [13,20], 35));
+				schedule.push(buildBlock(6, [13,55], 40));
+				schedule.push(buildBlock(5, [14,35], 35));
 			} else if (weekday == 4) {
 				// Friday
 				// "C" : [1, 5, 2, 3, 4];
@@ -131,8 +120,8 @@ function buildSchedule() {
 				schedule.push(recess);
 				schedule.push(buildBlock(dayblocks[3], [11,20], 80));
 				schedule.push(buildBlock("Block " + dayblocks[4] + " / Early Lunch", [12,40], 40));
-				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [1,20], 35));
-				schedule.push(buildBlock(dayblocks[1], [1,55], 40));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [13,20], 35));
+				schedule.push(buildBlock(dayblocks[1], [13,55], 40));
 			} else {
 				// Other days
 				var dayblocks = blocks[letterDay];
@@ -145,8 +134,8 @@ function buildSchedule() {
 				schedule.push(recess);
 				schedule.push(buildBlock(dayblocks[3], [11,20], 80));
 				schedule.push(buildBlock("Block " + dayblocks[4] + " / Early Lunch", [12,40], 40));
-				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [1,20], 35));
-				schedule.push(buildBlock(7, [1,55], dayinfo[1]));
+				schedule.push(buildBlock("Block " + dayblocks[4] + " / Late Lunch", [13,20], 35));
+				schedule.push(buildBlock(7, [13,55], dayinfo[1]));
 			}
 
 			loading = false;
@@ -184,18 +173,14 @@ function updatePage() {
 	var curr_date = d.getDate();
 	var curr_month = d.getMonth();
 
-	var curr_hour = d.getHours() % 12;
+	var curr_hour = d.getHours();
 	var curr_min = d.getMinutes();
-
-	if (curr_hour == 0) {
-		curr_hour = 12;
-	}
 
 	$("header .time").html(formatTime([curr_hour, curr_min]));
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
-	var currentIndex = 0;
+	var currentIndex;
 
 	if (loading) {
 		$("#schedule").html('<h1 class="loading">Loading...</h1>');
@@ -232,8 +217,12 @@ function happeningNow(block, time) {
 }
 
 function formatTime(time) {
-	var curr_hour = time[0];
+	var curr_hour = time[0] % 12;
 	var curr_min = time[1] + "";
+
+	if (curr_hour == 0) {
+		curr_hour = 12;
+	}
 	
 	if (curr_min.length == 1) {
 		curr_min = "0" + curr_min;

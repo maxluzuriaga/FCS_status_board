@@ -181,7 +181,7 @@ function updatePage() {
 	$("header .weekday").html(d_names[curr_day]);
 	$("header .date").html(m_names[curr_month] + " " + curr_date);
 
-	var currentIndex;
+	var currentIndex = -1;
 
 	if (loading) {
 		// Some loading code
@@ -201,7 +201,7 @@ function updatePage() {
 
 			var items = [];
 
-			for (var n = currentIndex - 1; n <= currentIndex + 3; n++) {
+			for (var n = 0; n < schedule.length; n++) {
 				if (n < 0) {
 					continue; // If we're on the first block, don't insert block before
 				} else if (n >= schedule.length) { // Likewise if we're beyond the schedule's bounds
@@ -213,7 +213,7 @@ function updatePage() {
 
 				if (n == currentIndex) {
 					additionalClass = ' current-class';
-				} else if (n == currentIndex - 1) {
+				} else if (n < currentIndex) {
 					additionalClass = ' last-class';
 				}
 

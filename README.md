@@ -9,3 +9,4 @@ If anyone wants to fork the repo and do these, be my guest.
 - Figure out season based on current date for color scheme
 - Highlight background of current class
 - Weather isn't accurate, change the API (Yahoo weather?)
+- Make text adjust after the class changes

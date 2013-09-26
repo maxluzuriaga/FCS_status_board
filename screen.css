@@ -33,7 +33,7 @@ body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
 	font-weight: 300;
 	font-size: 100%;
-	background: #aaa;
+	background: #ccc;
 }
 html { overflow-y: scroll; }
 label, input[type=button], input[type=submit], button { cursor: pointer; }
@@ -75,10 +75,15 @@ header h1 {
    --------------------------------------------------------------------------------------- */
 
 #schedule {
-	padding: 2.5% 0;
-	margin: 2.5% 0;
+	padding-top: 2.5%;
+	margin-top: 2.5%;
+	
 	border-top: 4px solid rgba(0,0,0,.5);
-	border-bottom: 4px solid rgba(0,0,0,.5);
+}
+#schedule-bottom {
+	border-top: 4px solid rgba(0,0,0,.5);
+	margin-top: 2.5%;
+	margin-bottom: 2.5%;
 }
 
 #schedule ol {

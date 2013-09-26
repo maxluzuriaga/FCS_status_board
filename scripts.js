@@ -2,9 +2,10 @@ var letterDay = "";
 var loading;
 var schedule;
 var oldIndex;
+var weatherCode = -1;
 
 function updateWeather() {
-	// Update weather (http://simpleweatherjs.com)
+	// Update weather http://simpleweatherjs.com
 	var degree = "&#176;"
 
 	$.simpleWeather({
@@ -16,6 +17,15 @@ function updateWeather() {
 			$("#current-temp strong").html(weather.temp + degree);
 			$("footer .high-temp").html(weather.high + degree);
 			$("footer .low-temp").html(weather.low + degree);
+
+			var code = weather.code;
+			if (weatherCode != code) {
+				// Weather conditions have changed
+				weatherCode = parseInt(code);
+
+				clearWeatherBackground();
+				setWeatherBackground();
+			};
 		},
 		error: function(error) {
 			console.log("Weather error");
@@ -221,7 +231,10 @@ function updatePage() {
 			}
 
 			$("#schedule ol").html(items.join(""));
+
 			layoutText();
+			clearWeatherBackground();
+			setWeatherBackground();
 		}
 	}
 }
@@ -274,6 +287,58 @@ function layoutText() {
 	$("#schedule li.current-class .block").fitText(0.9);
 }
 
+function clearWeatherBackground() {
+	console.log(weatherCode);
+	$(document).snowfall('clear');
+	$("body > canvas").remove(); // Manually remove collected snowflakes
+}
+
+function setWeatherBackground() {
+	// Weather codes: http://developer.yahoo.com/weather/#codes
+
+	// 5 = rain AND snow
+	// 7 = snow and sleet
+	// 13 = flurries
+	// 14 = light snow
+	// 15 = blowing snow
+	// 16 = snow
+	// 41/42/43 = heavy snow
+	// 46 = snow showers
+
+	// 3/4 = thunderstorms
+	// 8/9 = drizzle
+	// 10/11/12 = rain
+	// 37/38/39 = scattered t-storms
+	// 40 = scattered rain
+	// 45 = thundershowers
+
+	switch(weatherCode)
+	{
+		case 5:
+		case 7:
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+		case 41:
+		case 42:
+		case 43:
+		case 44:
+			snow(100);
+
+		default:
+			snow(1000);
+			break;
+	}
+}
+
+function snow(amount) {
+	$(document).snowfall({
+		flakeCount : amount,
+		collection : '#schedule-bottom'
+	});
+}
+
 window.setInterval(function() {
 	updatePage();
 }, 1000); // Every second
@@ -281,6 +346,12 @@ window.setInterval(function() {
 window.setInterval(function() {
 	updateWeather();
 }, 60000); // Every minute
+
+$(window).resize(function() {
+	clearWeatherBackground();
+
+	setWeatherBackground();
+});
 
 $(document).ready(function(){
 	loading = true;

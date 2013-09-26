@@ -291,51 +291,85 @@ function clearWeatherBackground() {
 	console.log(weatherCode);
 	$(document).snowfall('clear');
 	$("body > canvas").remove(); // Manually remove collected snowflakes
+
+	$("#rain").remove(); // Reset the rain
+	$("body").prepend('<div id="rain"></div>');
 }
 
 function setWeatherBackground() {
 	// Weather codes: http://developer.yahoo.com/weather/#codes
-
-	// 5 = rain AND snow
-	// 7 = snow and sleet
-	// 13 = flurries
-	// 14 = light snow
-	// 15 = blowing snow
-	// 16 = snow
-	// 41/42/43 = heavy snow
-	// 46 = snow showers
-
-	// 3/4 = thunderstorms
-	// 8/9 = drizzle
-	// 10/11/12 = rain
-	// 37/38/39 = scattered t-storms
-	// 40 = scattered rain
-	// 45 = thundershowers
+	weatherCode = 5;
 
 	switch(weatherCode)
 	{
-		case 5:
-		case 7:
-		case 13:
+		case 5: // mixed rain and snow
+			snow(50);
+			rain(3, 800);
+			break;
+
+		case 8: // light rain
+		case 9:
+			rain(3);
+			break;
+
+		case 6: // rain
+		case 10:
+		case 11:
+		case 12:
+		case 35:
+		case 40:
+			rain(10);
+			break
+
+		case 3: // heavy rain
+		case 4:
+		case 37:
+		case 38:
+		case 39:
+		case 45:
+			rain(50, 400);
+			break;
+
+		case 13: // light snow
 		case 14:
+			snow(35);
+			break;
+
+		case 7: // snow
 		case 15:
 		case 16:
-		case 41:
 		case 42:
-		case 43:
-		case 44:
-			snow(100);
+		case 46:
+			snow(200);
+			break;
 
-		default:
-			snow(1000);
+		case 41: // heavy snow
+		case 43:
+			snow(1000, 10);
 			break;
 	}
 }
 
-function snow(amount) {
+function snow(amount, speed) {
+	speed = speed || 1;
+
 	$(document).snowfall({
 		flakeCount : amount,
+		minSpeed : speed,
+		maxSpeed : speed + 2,
 		collection : '#schedule-bottom'
+	});
+}
+
+function rain(amount, speed) {
+	speed = speed || 600;
+
+	new Rain('rain', {
+		speed: speed,
+		angle: 10,
+		intensity: amount,
+		size: 5,
+		color: '#ccf'
 	});
 }
 

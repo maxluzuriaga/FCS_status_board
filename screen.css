@@ -33,7 +33,6 @@ body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
 	font-weight: 300;
 	font-size: 100%;
-	background: #444;
 }
 html { overflow-y: scroll; }
 label, input[type=button], input[type=submit], button { cursor: pointer; }
@@ -55,6 +54,28 @@ strong {
 	height: 100%;
 }
 
+/* Fall */
+
+body.fall {
+	background-color: #FFB400;
+	color: #333;
+}
+.fall #schedule li.current-class .block {
+	color: #994023;
+}
+.fall header time .time {
+	color: #35472B;
+}
+.fall header time .date {
+	color: #AB5927;
+}
+.fall #schedule, .fall #schedule-bottom {
+	border-color: rgba(53,71,43,0.7);
+}
+.fall #schedule li {
+	border-color: rgba(53,71,43,0.4);
+}
+
 /* ---------------------------------------------------------------------------------------
    Header
    --------------------------------------------------------------------------------------- */
@@ -64,9 +85,6 @@ header {
 }
 header time {
 	float: left;
-}
-header time .time {
-	color: green;
 }
 
 header time .date {
@@ -96,7 +114,6 @@ header h1 {
 	list-style-type: none;
 }
 #schedule li {
-	/*background-color: red;*/
 	border-bottom: 1px solid rgba(0,0,0,.2);
 	padding-bottom: 1.1%;
 	margin-bottom: 1.1%;
@@ -129,9 +146,6 @@ header h1 {
 	text-align: center;
 	margin-left: 15%;
 	width: 70%;
-}
-#schedule li.current-class .block {
-	color: green;
 }
 
 /* ---------------------------------------------------------------------------------------

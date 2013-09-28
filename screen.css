@@ -123,6 +123,28 @@ body.spring {
 	border-color: rgba(0,0,0,0.2);
 }
 
+/* Summer */
+
+body.summer {
+	background-color: #EAFF89;
+	color: #333;
+}
+.summer #schedule li.current-class .block {
+	color: #F9A845;
+}
+.summer header time .time {
+	color: #70EF81;
+}
+.summer header time .date {
+	color: #F9A845;
+}
+.summer #schedule, .summer #schedule-bottom {
+	border-color: rgba(0,0,0,0.3);
+}
+.summer #schedule li {
+	border-color: rgba(0,0,0,0.2);
+}
+
 /* ---------------------------------------------------------------------------------------
    Header
    --------------------------------------------------------------------------------------- */

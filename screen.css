@@ -101,6 +101,28 @@ body.winter {
 	color: #F3FBFF;
 }
 
+/* Spring */
+
+body.spring {
+	background-color: #A2E891;
+	color: #333;
+}
+.spring #schedule li.current-class .block {
+	color: #FFEDAE;
+}
+.spring header time .time {
+	color: #ACF7FF;
+}
+.spring header time .date {
+	color: #FFEDAE;
+}
+.spring #schedule, .spring #schedule-bottom {
+	border-color: rgba(0,0,0,0.3);
+}
+.spring #schedule li {
+	border-color: rgba(0,0,0,0.2);
+}
+
 /* ---------------------------------------------------------------------------------------
    Header
    --------------------------------------------------------------------------------------- */

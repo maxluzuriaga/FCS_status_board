@@ -76,6 +76,31 @@ body.fall {
 	border-color: rgba(53,71,43,0.4);
 }
 
+/* Winter */
+
+body.winter {
+	background-color: #C9EBFF;
+	color: #AAA9A2;
+}
+.winter #schedule li.current-class .block {
+	color: #F3FBFF;
+}
+.winter header time .time {
+	color: #FAFBE9;
+}
+.winter header time .date {
+	color: #FAFBE9;
+}
+.winter #schedule, .winter #schedule-bottom {
+	border-color: rgba(250,251,233,0.7);
+}
+.winter #schedule li {
+	border-color: rgba(250,251,233,0.8);
+}
+.winter #temps span.low-temp {
+	color: #F3FBFF;
+}
+
 /* ---------------------------------------------------------------------------------------
    Header
    --------------------------------------------------------------------------------------- */

@@ -3,6 +3,7 @@ var loading;
 var schedule;
 var oldIndex;
 var weatherCode = -1;
+var season = "";
 
 function updateWeather() {
 	// Update weather http://simpleweatherjs.com
@@ -31,6 +32,46 @@ function updateWeather() {
 			console.log("Weather error");
 		}
 	});
+}
+
+function updateSeason() {
+	// Fall: 9, 10, 11
+	// Winter: 12, 1, 2
+	// Spring: 3, 4, 5
+	// Summer: 6, 7, 8
+	var d = new Date();
+	var month = d.getMonth() + 1;
+
+	var newSeason = "";
+
+	switch(month) {
+		case 12:
+		case 1:
+		case 2:
+			newSeason = "winter";
+			break;
+		case 3:
+		case 4:
+		case 5:
+			newSeason = "spring";
+			break;
+		case 6:
+		case 7:
+		case 8:
+			newSeason = "summer";
+			break;
+		case 9:
+		case 10:
+		case 11:
+			newSeason = "fall";
+			break;
+	}
+
+	if(newSeason != season) {
+		$("body").removeClass(season);
+		season = newSeason;
+		$("body").addClass(season);
+	}
 }
 
 function buildSchedule() {
@@ -288,7 +329,6 @@ function layoutText() {
 }
 
 function clearWeatherBackground() {
-	console.log(weatherCode);
 	$(document).snowfall('clear');
 	$("body > canvas").remove(); // Manually remove collected snowflakes
 
@@ -298,10 +338,7 @@ function clearWeatherBackground() {
 
 function setWeatherBackground() {
 	// Weather codes: http://developer.yahoo.com/weather/#codes
-	weatherCode = 5;
-
-	switch(weatherCode)
-	{
+	switch(weatherCode) {
 		case 5: // mixed rain and snow
 			snow(50);
 			rain(3, 800);
@@ -379,6 +416,7 @@ window.setInterval(function() {
 
 window.setInterval(function() {
 	updateWeather();
+	updateSeason();
 }, 60000); // Every minute
 
 $(window).resize(function() {
@@ -390,6 +428,7 @@ $(window).resize(function() {
 $(document).ready(function(){
 	loading = true;
 
+	updateSeason();
 	buildSchedule();
 	updatePage();
 	updateWeather();

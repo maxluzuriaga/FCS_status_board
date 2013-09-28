@@ -406,7 +406,7 @@ function rain(amount, speed) {
 		angle: 10,
 		intensity: amount,
 		size: 5,
-		color: '#ccf'
+		color: '#00F'
 	});
 }
 

@@ -88,6 +88,10 @@ function buildSchedule() {
 			curr_month = "0" + curr_month;
 		}
 
+		if (curr_date < 10) {
+			curr_date = "0" + curr_date;
+		}
+
 		var dayformatted = "" + curr_year + curr_month + curr_date;
 
 		// https://code.google.com/p/ijp/
